@@ -1,0 +1,29 @@
+{% load static %}
+<div class="page-sidebar">
+    <ul class="list-unstyled accordion-menu">
+      <li class="sidebar-title">
+        Input
+      </li>
+      <li>
+        <a href="{% url "inputdatananas" %}"><i data-feather="edit"></i>Input Data Nanas</a>
+      </li>
+      <li>
+        <a href="{% url "inputdatapenyakit" %}"><i data-feather="edit"></i>Input Data Penyakit</a>
+      </li>
+      <li>
+        <a href="{% url "inputdatagejala" %}"><i data-feather="edit"></i>Input Data Gejala</a>
+      </li>
+      <li class="sidebar-title">
+        Proses
+      </li>
+      <li>
+        <a href="{% url "prosesmpl" %}"><i data-feather="refresh-cw"></i>Proses MPL</a>
+      </li>
+      <li class="sidebar-title">
+          Output
+        </li>
+        <li>
+          <a href="{% url "hasilklasifikasi" %}"><i data-feather="file-text"></i>Hasil Klasifikasi</a>
+        </li>
+    </ul>
+</div>

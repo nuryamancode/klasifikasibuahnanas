@@ -1,0 +1,51 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}
+Signin
+{% endblock title %}
+
+{% block bodyclass %}
+login-page
+{% endblock bodyclass %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-12 col-lg-4">
+            <div class="card login-box-container">
+                <div class="card-body">
+                    <div class="authent-logo">
+                        <img src="{% static "assets/images/logo-new.png" %}" alt="">
+                    </div>
+                    <div class="authent-text">
+                        <p>Klasifikasi Buah Nanas</p>
+                        <p style="font-size:12px;">Silahkan melakukan login terlebih dahulu</p>
+                    </div>
+
+                    <form>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="name" class="form-control" id="floatingInput" placeholder="admin">
+                                <label for="floatingInput">Username</label>
+                              </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                <label for="floatingPassword">Password</label>
+                              </div>
+                        </div>
+                        <div class="d-grid">
+                        <button type="submit" class="btn btn-info m-b-xs">Sign In</button>
+                    </div>
+                      </form>
+                      {% comment %} <div class="authent-reg">
+                          <p>Not registered? <a href="register.html">Create an account</a></p>
+                      </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
