@@ -35,6 +35,18 @@
 
         
         <!-- Javascripts -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              const menuItems = document.querySelectorAll('.page-sidebar li');
+              menuItems.forEach(function(item) {
+                const link = item.querySelector('a');
+                if (link && window.location.href.indexOf(link.href) !== -1) {
+                  item.classList.add('active');
+                }
+              });
+            });
+          </script>
+          
         <script src="{% static "/assets/plugins/jquery/jquery-3.4.1.min.js" %}"></script>
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="{% static "/assets/plugins/bootstrap/js/bootstrap.min.js" %}"></script>

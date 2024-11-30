@@ -22,19 +22,24 @@ login-page
                         <p>Klasifikasi Buah Nanas</p>
                         <p style="font-size:12px;">Silahkan melakukan login terlebih dahulu</p>
                     </div>
-
-                    <form>
+                    <form method="post" action="{% url "proses_login" %}">
+                        {% if messages %}
+                        {% for message in messages %}
+                                <div class="text-danger mb-3">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                        {% csrf_token %}
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="name" class="form-control" id="floatingInput" placeholder="admin">
+                                <input type="name" class="form-control" id="floatingInput" name="username">
                                 <label for="floatingInput">Username</label>
-                              </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                <input type="password" class="form-control" id="floatingPassword" name="password">
                                 <label for="floatingPassword">Password</label>
-                              </div>
+                            </div>
                         </div>
                         <div class="d-grid">
                         <button type="submit" class="btn btn-info m-b-xs">Sign In</button>

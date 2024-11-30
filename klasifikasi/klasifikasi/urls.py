@@ -19,7 +19,9 @@ from administrator import views
 from django.urls import path
 
 urlpatterns = [
-    path('', views.login, name='login'),
+    path('', views.v_login, name='login'),
+    path('login/submit/', views.login, name='proses_login'),
+    path('logout/', views.logout, name='logout'),
     path('ind-nanas', views.inputdatananas, name='inputdatananas'),
     path('ind-gejala', views.inputdatagejala, name='inputdatagejala'),
     path('ind-penyakit', views.inputdatapenyakit, name='inputdatapenyakit'),
