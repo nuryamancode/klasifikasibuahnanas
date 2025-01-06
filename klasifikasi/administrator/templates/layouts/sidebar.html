@@ -26,5 +26,10 @@
           <i data-feather="edit"></i>Hasil Klasifikasi
       </a>
     </li>
+    <li class="{% if request.path == request.build_absolute_uri|slice:":-1" %}active{% endif %}">
+      <a href="{% url 'prosesmpl' %}">
+          <i data-feather="edit"></i>Riwayat Klasifikasi
+      </a>
+    </li>
   </ul>
 </div>
