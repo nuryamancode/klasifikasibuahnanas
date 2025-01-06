@@ -1,8 +1,10 @@
-{% extends "layouts/base.html" %} 
+<!-- input_datananas.html -->
 
-{% block title %} 
-Input Data Nanas 
-{% endblock title %} 
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Input Data Nanas
+{% endblock title %}
 
 {% block contentchild %}
 <div class="page-content">
@@ -11,71 +13,61 @@ Input Data Nanas
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Input Data Nanas</h5>
-            <p>
-             Data Nanas {% lorem 1 b random %}
-            </p>
+            <h5 class="card-title">INPUT DATA NANAS</h5>
+
+            <!-- Menampilkan Pesan -->
+            {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Tombol Tambah Data dan Import Data -->
+            <div class="mb-3">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahDataModal">Tambah Data</button>
+              <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importDataModal">Import Data</button>
+              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTable">Kosongkan Tabel</button>
+            </div>
+
+            <!-- Tabel Data Nanas -->
             <table id="zero-conf" class="display" style="width: 100%">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>No</th>
+                  <th>Sample</th>
+                  <th>Red</th>
+                  <th>Green</th>
+                  <th>Blue</th>
+                  <th>Brix</th>
+                  <th>Label</th>
                 </tr>
               </thead>
               <tbody>
+                {% for data in data_nanas %}
                 <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ data.sample }}</td>
+                  <td>{{ data.red }}</td>
+                  <td>{{ data.green }}</td>
+                  <td>{{ data.blue }}</td>
+                  <td>{{ data.brix }}</td>
+                  <td>{{ data.label }}</td>
                 </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
-                <tr>
-                  <td>Ashton Cox</td>
-                  <td>Junior Technical Author</td>
-                  <td>San Francisco</td>
-                  <td>66</td>
-                  <td>2009/01/12</td>
-                  <td>$86,000</td>
-                </tr>
-                <tr>
-                  <td>Cedric Kelly</td>
-                  <td>Senior Javascript Developer</td>
-                  <td>Edinburgh</td>
-                  <td>22</td>
-                  <td>2012/03/29</td>
-                  <td>$433,060</td>
-                </tr>
-                <tr>
-                  <td>Airi Satou</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>33</td>
-                  <td>2008/11/28</td>
-                  <td>$162,700</td>
-                </tr>
+                {% endfor %}
               </tbody>
               <tfoot>
                 <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>No</th>
+                  <th>Sample</th>
+                  <th>Red</th>
+                  <th>Green</th>
+                  <th>Blue</th>
+                  <th>Brix</th>
+                  <th>Label</th>
                 </tr>
               </tfoot>
             </table>
@@ -85,4 +77,70 @@ Input Data Nanas
     </div>
   </div>
 </div>
-{% endblock contentchild %}
+
+<!-- Modal Tambah Data -->
+<div class="modal fade" id="tambahDataModal" tabindex="-1" aria-labelledby="tambahDataModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tambahDataModalLabel">Tambah Data Nanas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="sample" class="form-label">Sample</label>
+            <input type="number" name="sample" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="red" class="form-label">Red</label>
+            <input type="number" name="red" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="green" class="form-label">Green</label>
+            <input type="number" name="green" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="blue" class="form-label">Blue</label>
+            <input type="number" name="blue" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="brix" class="form-label">Brix</label>
+            <input type="number" name="brix" class="form-control" step="0.1" required>
+          </div>
+          <div class="mb-3">
+            <label for="label" class="form-label">Label</label>
+            <input type="text" name="label" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Import Data Modal -->
+<div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="importDataModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="importDataModalLabel">Import Data Nanas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form to upload Excel file -->
+        <form method="POST" enctype="multipart/form-data" action="{% url 'import_data_nanas' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="file" class="form-label">Pilih file Excel (.xlsx)</label>
+            <input class="form-control" type="file" id="file" name="file" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Import</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
