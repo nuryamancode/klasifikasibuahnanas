@@ -17,25 +17,6 @@
           <i data-feather="edit"></i>Input Data Nanas
       </a>
     </li>
-    <li class="{% if request.path == request.build_absolute_uri|slice:":-1" %}active{% endif %}">
-      <a href="{% url 'inputdatapenyakit' %}">
-          <i data-feather="edit"></i>Input Data Penyakit
-      </a>
-    </li>
-    <li class="{% if request.path == request.build_absolute_uri|slice:":-1" %}active{% endif %}">
-      <a href="{% url 'inputdatagejala' %}">
-          <i data-feather="edit"></i>Input Data Gejala
-      </a>
-    </li>
-
-    <li class="sidebar-title">
-      Proses
-    </li>
-    <li class="{% if request.path == request.build_absolute_uri|slice:":-1" %}active{% endif %}">
-      <a href="{% url 'prosesmpl' %}">
-          <i data-feather="edit"></i>Proses MPL
-      </a>
-    </li>
 
     <li class="sidebar-title">
       Output
