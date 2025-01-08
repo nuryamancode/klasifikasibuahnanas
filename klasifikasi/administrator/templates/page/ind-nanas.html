@@ -44,6 +44,7 @@ Input Data Nanas
                   <th>Blue</th>
                   <th>Brix</th>
                   <th>Label</th>
+                  <th>Gambar</th>
                 </tr>
               </thead>
               <tbody>
@@ -77,7 +78,7 @@ Input Data Nanas
     </div>
   </div>
 </div>
-
+ 
 <!-- Modal Tambah Data -->
 <div class="modal fade" id="tambahDataModal" tabindex="-1" aria-labelledby="tambahDataModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -143,4 +144,26 @@ Input Data Nanas
   </div>
 </div>
 
+<!-- Modal Kosongkan -->
+<div class="modal fade" id="deleteTable" tabindex="-1" aria-labelledby="deleteTableLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteTableLabel">Konfirmasi Kosongkan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Apakah Anda yakin ingin menghapus semua data?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+              <form action="{% url 'kosongkan_data_nanas' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Kosongkan</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+ 
 {% endblock %}

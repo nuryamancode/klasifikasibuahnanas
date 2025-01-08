@@ -11,78 +11,32 @@ Hasil Klasifikasi
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Hasil Klasifikasi</h5>
-            <p>
-             Hasil Klasifikasi {% lorem 1 b random %}
-            </p>
-            <table id="zero-conf" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
-                <tr>
-                  <td>Ashton Cox</td>
-                  <td>Junior Technical Author</td>
-                  <td>San Francisco</td>
-                  <td>66</td>
-                  <td>2009/01/12</td>
-                  <td>$86,000</td>
-                </tr>
-                <tr>
-                  <td>Cedric Kelly</td>
-                  <td>Senior Javascript Developer</td>
-                  <td>Edinburgh</td>
-                  <td>22</td>
-                  <td>2012/03/29</td>
-                  <td>$433,060</td>
-                </tr>
-                <tr>
-                  <td>Airi Satou</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>33</td>
-                  <td>2008/11/28</td>
-                  <td>$162,700</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
-                </tr>
-              </tfoot>
-            </table>
+            <h5 class="card-title">Klasifikasi Data Nanas</h5>
+            <p>Masukkan Nilai untuk Melakukan Klasifikasi</p>
+             <form id="nanasForm">
+              <div class="mb-3">
+                <label for="red" class="form-label">Red</label>
+                <input type="number" class="form-control" id="red" name="red" placeholder="Masukkan nilai red (merah)" required>
+              </div>
+              <div class="mb-3">
+                <label for="green" class="form-label">Green</label>
+                <input type="number" class="form-control" id="green" name="green" placeholder="Masukkan nilai green (hijau)" required>
+              </div>
+              <div class="mb-3">
+                <label for="blue" class="form-label">Blue</label>
+                <input type="number" class="form-control" id="blue" name="blue" placeholder="Masukkan nilai blue (biru)" required>
+              </div>
+              <div class="mb-3">
+                <label for="brix" class="form-label">Brix</label>
+                <input type="number" step="0.1" class="form-control" id="brix" name="brix" placeholder="Masukkan nilai brix (tingkat kemanisan)" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Klasifikasi</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 {% endblock contentchild %}

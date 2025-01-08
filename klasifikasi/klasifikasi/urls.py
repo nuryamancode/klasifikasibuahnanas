@@ -28,4 +28,5 @@ urlpatterns = [
     path('proses-mpl', views.prosesmpl, name='prosesmpl'),
     path('hasil-klasifikasi', views.hasilklasifikasi, name='hasilklasifikasi'),
     path('import/', views.import_data_nanas, name='import_data_nanas'),
+    path('kosongkan/', views.kosongkan_data_nanas, name='kosongkan_data_nanas'),
 ]

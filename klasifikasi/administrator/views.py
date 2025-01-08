@@ -85,46 +85,34 @@ def inputdatananas(request):
 def import_data_nanas(request):
     if request.method == 'POST' and request.FILES['file']:
         xlsx_file = request.FILES['file']
-        
-        # Check if the file is a valid Excel file
-        if not xlsx_file.name.endswith('.xlsx'):
-            messages.error(request, 'Harap unggah file dalam format XLSX.')
-            return redirect('inputdatananas')
-        
         try:
             # Read the Excel file into a pandas DataFrame
-            df = pd.read_excel(xlsx_file, engine='openpyxl')
+            df = pd.read_excel(xlsx_file)
 
-            # Example: Check if required columns exist (adapt based on your model)
-            required_columns = ['sample', 'red', 'green', 'blue', 'brix', 'label']  # Update with your actual model fields
-            for col in required_columns:
-                if col not in df.columns:
-                    messages.error(request, f'Missing required column: {col}')
-                    return redirect('inputdatananas')
+            for row in df.itertuples():
+                DataNanas.objects.create(
+                    sample=row.sample, red=row.red, green=row.green, blue=row.blue, brix=row.brix, label=row.label
+                )
 
-            # Process each row of the DataFrame and save to the database
-            for index, row in df.iterrows():
-                try:
-                    # Create DataNanas instances and save them
-                    data_nanas = DataNanas(
-                        sample=row['Sample'],
-                        red=row['Red'],
-                        green=row['Green'],
-                        blue=row['Blue'],
-                        brix=row['Brix'],
-                        label=row['Label'],
-                    )
-                    data_nanas.save()
-                except Exception as e:
-                    messages.error(request, f'Error processing row {index+1}: {str(e)}')
+            messages.success(request, "Data berhasil diimpor!")
 
-            messages.success(request, 'Data berhasil diimpor!')
         except Exception as e:
             messages.error(request, f'Error importing data: {str(e)}')
 
         return redirect('inputdatananas')
 
     return render(request, 'input_datananas.html')
+
+@login_required
+def kosongkan_data_nanas(request):
+    if request.method == "POST":
+        try:
+            DataNanas.objects.all().delete()
+            messages.success(request, "Semua data berhasil dihapus!")
+        except Exception as e:
+            messages.error(request, f"Terjadi kesalahan: {str(e)}")
+        return redirect("inputdatananas")
+    return redirect('inputdatananas')
 
 @login_required
 def inputdatagejala(request):
