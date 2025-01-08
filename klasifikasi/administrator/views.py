@@ -128,6 +128,10 @@ def inputdatapenyakit(request):
 def prosesmpl(request):
     return render(request, 'page/proses-mpl.html')
 
+@login_required
+def riwayatklasifikasi(request):
+    return render(request, 'page/riwayat-klasifikasi.html')
+
 # Load model dan scaler
 mlp_model = joblib.load("mlp_model.pkl")
 scaler = joblib.load("scaler.pkl")
