@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from .models import DataNanas
 from django.core.exceptions import ValidationError
 import pandas as pd
+import joblib
+import numpy as np
 
 # Create your views here.
 def user_not_authenticated(user):
@@ -126,6 +128,42 @@ def inputdatapenyakit(request):
 def prosesmpl(request):
     return render(request, 'page/proses-mpl.html')
 
+# Load model dan scaler
+mlp_model = joblib.load("mlp_model.pkl")
+scaler = joblib.load("scaler.pkl")
+
 @login_required
 def hasilklasifikasi(request):
-    return render(request, 'page/hasil-klasifikasi.html')
+    if request.method == 'GET':
+        # Tampilkan halaman form
+        return render(request, 'page/hasil-klasifikasi.html')
+    
+    if request.method == 'POST':
+        try:
+            # Ambil data dari form
+            red = float(request.POST.get('red'))
+            green = float(request.POST.get('green'))
+            blue = float(request.POST.get('blue'))
+            brix = float(request.POST.get('brix'))
+
+            # Preprocessing data
+            input_data = np.array([[red, green, blue, brix]])
+            input_data_scaled = scaler.transform(input_data)  # Normalisasi data
+
+            # Prediksi
+            prediction = mlp_model.predict(input_data_scaled)
+            label_map = {0: 'Rendah', 1: 'Sedang', 2: 'Tinggi'}  # Mapping label numerik ke kategori
+            hasil_klasifikasi = label_map[prediction[0]]
+
+            # Kembalikan hasil prediksi ke halaman
+            return render(request, 'page/hasil-klasifikasi.html', {
+                'hasil': hasil_klasifikasi,
+                'input': {
+                    'red': red,
+                    'green': green,
+                    'blue': blue,
+                    'brix': brix,
+                }
+            })
+        except Exception as e:
+            return render(request, 'page/hasil-klasifikasi.html', {'error': str(e)})
