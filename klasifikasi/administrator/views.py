@@ -161,6 +161,16 @@ def hasilklasifikasi(request):
             label_map = {0: 'Rendah', 1: 'Sedang', 2: 'Tinggi'}  # Mapping label numerik ke kategori
             hasil_klasifikasi = label_map[prediction[0]]
 
+            # Cari data nanas yang nilainya paling dekat
+            closest_match = DataNanas.objects.annotate(
+                diff_red=F('red') - red,
+                diff_green=F('green') - green,
+                diff_blue=F('blue') - blue,
+                diff_brix=F('brix') - brix
+            ).order_by(
+                (F('diff_red')**2 + F('diff_green')**2 + F('diff_blue')**2 + F('diff_brix')**2).asc()
+            ).first()
+
             # Kembalikan hasil prediksi ke halaman
             return render(request, 'page/hasil-klasifikasi.html', {
                 'hasil': hasil_klasifikasi,
@@ -169,7 +179,8 @@ def hasilklasifikasi(request):
                     'green': green,
                     'blue': blue,
                     'brix': brix,
-                }
+                },
+                'gambar': closest_match.gambar if closest_match else None
             })
         except Exception as e:
             return render(request, 'page/hasil-klasifikasi.html', {'error': str(e)})
