@@ -7,6 +7,7 @@ Riwayat Klasifikasi Buah Nanas
 {% endblock title %}
 
 {% block contentchild %}
+{% load static %}
 <div class="page-content">
   <div class="main-wrapper">
     <div class="row">
@@ -15,18 +16,7 @@ Riwayat Klasifikasi Buah Nanas
           <div class="card-body">
             <h5 class="card-title">RIWAYAT KLASIFIKASI NANAS</h5>
 
-            <!-- Menampilkan Pesan -->
-            {% if messages %}
-            <div class="alert alert-dismissible fade show" role="alert">
-              {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
-              {% endfor %}
-            </div>
-            {% endif %}
-
-            <!-- Tabel Data Nanas -->
+            <!-- Tabel Riwayat Klasifikasi -->
             <table id="zero-conf" class="display" style="width: 100%">
               <thead>
                 <tr>
@@ -37,38 +27,39 @@ Riwayat Klasifikasi Buah Nanas
                   <th>Brix</th>
                   <th>Label</th>
                   <th>Gambar</th>
+                  <th>Waktu</th>
                 </tr>
               </thead>
               <tbody>
-                {% for data in data_nanas %}
+                {% for data in riwayat_nanas %}
                 <tr>
-                  <td>{{ forloop.counter }}</td>
+                  <td>{{ forloop.counter }}</td> <!-- Menampilkan nomor urut -->
                   <td>{{ data.red }}</td>
                   <td>{{ data.green }}</td>
                   <td>{{ data.blue }}</td>
                   <td>{{ data.brix }}</td>
                   <td>{{ data.label }}</td>
+                  <td>
+                    {% if data.gambar %}
+                      <img src="{% static 'foto_nanas/'|add:data.gambar %}" alt="Gambar Nanas" style="max-width: 100px; height: auto; border: 1px solid #ddd;">
+                    {% else %}
+                      Tidak ada gambar
+                    {% endif %}
+                  </td>
+                  <td>{{ data.created_at|date:"d-m-Y H:i:s" }}</td> <!-- Format tanggal -->
                 </tr>
                 {% endfor %}
-                <tr>
-                    <td>1</td>
-                    <td>140</td>
-                    <td>130</td>
-                    <td>130</td>
-                    <td>15.7</td>
-                    <td>Tinggi</td>
-                    <td>Gambar</td>
-                  </tr>
               </tbody>
               <tfoot>
                 <tr>
                   <th>No</th>
-                  <th>Sample</th>
                   <th>Red</th>
                   <th>Green</th>
                   <th>Blue</th>
                   <th>Brix</th>
                   <th>Label</th>
+                  <th>Gambar</th>
+                  <th>Waktu</th>
                 </tr>
               </tfoot>
             </table>

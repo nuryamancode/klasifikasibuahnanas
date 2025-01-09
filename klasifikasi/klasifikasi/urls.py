@@ -30,4 +30,5 @@ urlpatterns = [
     path('riwayat-klasifikasi', views.riwayatklasifikasi, name='riwayatklasifikasi'),
     path('import/', views.import_data_nanas, name='import_data_nanas'),
     path('kosongkan/', views.kosongkan_data_nanas, name='kosongkan_data_nanas'),
+    path('simpan-klasifikasi/', views.simpan_klasifikasi, name='simpan_klasifikasi'),
 ]

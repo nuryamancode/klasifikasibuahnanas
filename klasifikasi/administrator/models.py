@@ -19,3 +19,16 @@ class DataNanas(models.Model):
 
     def __str__(self):
         return f"Sample {self.sample} - {self.label}"
+    
+class RiwayatKlasifikasi(models.Model):
+    red = models.IntegerField()
+    green = models.IntegerField()
+    blue = models.IntegerField()
+    brix = models.FloatField()
+    label = models.CharField(max_length=10)
+    gambar = models.CharField(max_length=200, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.label} - {self.created_at}"
+

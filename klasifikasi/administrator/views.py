@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import DataNanas
+from .models import DataNanas, RiwayatKlasifikasi
 from django.core.exceptions import ValidationError
 import pandas as pd
 import joblib
@@ -132,7 +132,13 @@ def prosesmpl(request):
 
 @login_required
 def riwayatklasifikasi(request):
-    return render(request, 'page/riwayat-klasifikasi.html')
+    # Ambil semua data dari model RiwayatKlasifikasi
+    riwayat_nanas = RiwayatKlasifikasi.objects.all().order_by('-created_at')  # Urutkan berdasarkan waktu terbaru
+
+    # Kirim data ke template melalui context
+    return render(request, 'page/riwayat-klasifikasi.html', {
+        'riwayat_nanas': riwayat_nanas
+    })
 
 # Load model dan scaler
 mlp_model = joblib.load("mlp_model.pkl")
@@ -158,7 +164,7 @@ def hasilklasifikasi(request):
 
             # Prediksi
             prediction = mlp_model.predict(input_data_scaled)
-            label_map = {0: 'Rendah', 1: 'Sedang', 2: 'Tinggi'}  # Mapping label numerik ke kategori
+            label_map = {0: 'C', 1: 'B', 2: 'A'}  # Mapping label numerik ke kategori
             hasil_klasifikasi = label_map[prediction[0]]
 
             # Cari data nanas yang nilainya paling dekat
@@ -184,3 +190,43 @@ def hasilklasifikasi(request):
             })
         except Exception as e:
             return render(request, 'page/hasil-klasifikasi.html', {'error': str(e)})
+        
+@login_required(login_url='login')
+def simpan_klasifikasi(request):
+    if request.method == 'POST':
+        try:
+            # Mengambil data dari form
+            red = int(float(request.POST.get('red')))  # Konversi dari string float ke integer
+            green = int(float(request.POST.get('green')))  # Konversi dari string float ke integer
+            blue = int(float(request.POST.get('blue')))  # Konversi dari string float ke integer
+            brix = float(request.POST.get('brix'))  # Tetap float
+            label = request.POST.get('label')
+            gambar = request.POST.get('gambar')
+
+            # Simpan data baru ke dalam tabel RiwayatKlasifikasi
+            riwayat_baru = RiwayatKlasifikasi(
+                red=red,
+                green=green,
+                blue=blue,
+                brix=brix,
+                label=label,
+                gambar=gambar
+            )
+            riwayat_baru.save()
+
+            # Redirect kembali ke halaman hasilklasifikasi dengan pesan sukses
+            messages.success(request, 'Data nanas berhasil ditambahkan!')
+            return redirect('hasilklasifikasi')
+
+        except ValueError as e:
+            # Tangani kesalahan jika terjadi error pada konversi tipe data
+            messages.error(request, f"Terjadi kesalahan: {str(e)}")
+            return redirect('hasilklasifikasi')
+
+        except Exception as e:
+            # Tangani error lain yang tidak terduga
+            messages.error(request, f"Kesalahan tidak terduga: {str(e)}")
+            return redirect('hasilklasifikasi')
+
+    # Jika request bukan POST, kembalikan ke halaman hasilklasifikasi
+    return redirect('hasilklasifikasi')

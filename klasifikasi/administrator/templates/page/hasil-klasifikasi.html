@@ -12,9 +12,19 @@ Hasil Klasifikasi
       <div class="col">
         <div class="card">
           <div class="card-body">
+            <!-- Menampilkan Pesan -->
             <h5 class="card-title">Klasifikasi Data Nanas</h5>
             <p>Masukkan Nilai untuk Melakukan Klasifikasi</p>
-            <h2 class="text-center">Klasifikasi Data Nanas</h2>
+            <!-- Menampilkan Pesan -->
+            {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
             <form method="POST" class="mt-4">
               {% csrf_token %}
               <div class="mb-3">
@@ -94,7 +104,16 @@ Hasil Klasifikasi
             
               <!-- Tombol Simpan Hasil Klasifikasi -->
               <div>
-                <button class="btn btn-success">Simpan Hasil Klasifikasi</button>
+                <form action="{% url 'simpan_klasifikasi' %}" method="POST" class="mt-2">
+                  {% csrf_token %}
+                  <input type="hidden" name="red" value="{{ input.red }}">
+                  <input type="hidden" name="green" value="{{ input.green }}">
+                  <input type="hidden" name="blue" value="{{ input.blue }}">
+                  <input type="hidden" name="brix" value="{{ input.brix }}">
+                  <input type="hidden" name="label" value="{{ hasil }}">
+                  <input type="hidden" name="gambar" value="{{ gambar }}">
+                  <button type="submit" name="simpan_hasil" class="btn btn-success">Simpan Hasil Klasifikasi</button>
+                </form>
               </div>
             </div>
             {% endif %}
