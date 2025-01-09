@@ -69,7 +69,16 @@ Hasil Klasifikasi
             </form>
       
             {% if hasil %}
-            <div class="mt-4" style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start; text-align: left; gap: 20px;">
+            <div class="mt-4" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 20px;">
+              <!-- Bagian Gambar -->
+              <div>
+                {% if gambar %}
+                  <img src="{% static 'foto_nanas/'|add:gambar %}" alt="Gambar Nanas" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
+                {% else %}
+                  <p class="text-warning">Gambar tidak tersedia.</p>
+                {% endif %}
+              </div>
+            
               <!-- Bagian Hasil Klasifikasi -->
               <div>
                 <h4>Hasil Klasifikasi</h4>
@@ -82,22 +91,14 @@ Hasil Klasifikasi
                   <span class="text-success">{{ hasil }}</span>
                 </p>
               </div>
-
-              <!-- Bagian Gambar -->
+            
+              <!-- Tombol Simpan Hasil Klasifikasi -->
               <div>
-                {% if gambar %}
-                  <img src="{% static 'foto_nanas/'|add:gambar %}" alt="Gambar Nanas" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
-                {% else %}
-                  <p class="text-warning">Gambar tidak tersedia.</p>
-                {% endif %}
+                <button class="btn btn-success">Simpan Hasil Klasifikasi</button>
               </div>
             </div>
-
-            <!-- Tombol Simpan Hasil Klasifikasi -->
-            <div class="mt-3" style="text-align: center;">
-              <button class="btn btn-success">Simpan Hasil Klasifikasi</button>
-            </div>
             {% endif %}
+            
             
           </div>
         </div>
