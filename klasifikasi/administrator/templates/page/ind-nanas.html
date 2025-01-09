@@ -1,5 +1,4 @@
 <!-- input_datananas.html -->
-
 {% extends "layouts/base.html" %}
 
 {% block title %}
@@ -7,6 +6,7 @@ Input Data Latih Nanas
 {% endblock title %}
 
 {% block contentchild %}
+{% load static %}
 <div class="page-content">
   <div class="main-wrapper">
     <div class="row">
@@ -34,44 +34,53 @@ Input Data Latih Nanas
             </div>
 
             <!-- Tabel Data Nanas -->
-            <table id="zero-conf" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Sample</th>
-                  <th>Red</th>
-                  <th>Green</th>
-                  <th>Blue</th>
-                  <th>Brix</th>
-                  <th>Label</th>
-                  <th>Gambar</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for data in data_nanas %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ data.sample }}</td>
-                  <td>{{ data.red }}</td>
-                  <td>{{ data.green }}</td>
-                  <td>{{ data.blue }}</td>
-                  <td>{{ data.brix }}</td>
-                  <td>{{ data.label }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>No</th>
-                  <th>Sample</th>
-                  <th>Red</th>
-                  <th>Green</th>
-                  <th>Blue</th>
-                  <th>Brix</th>
-                  <th>Label</th>
-                </tr>
-              </tfoot>
-            </table>
+              <!-- Tabel Data Nanas -->
+              <table id="zero-conf" class="display" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Sample</th>
+                    <th>Red</th>
+                    <th>Green</th>
+                    <th>Blue</th>
+                    <th>Brix</th>
+                    <th>Label</th>
+                    <th>Gambar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for data in data_nanas %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ data.sample }}</td>
+                    <td>{{ data.red }}</td>
+                    <td>{{ data.green }}</td>
+                    <td>{{ data.blue }}</td>
+                    <td>{{ data.brix }}</td>
+                    <td>{{ data.label }}</td>
+                    <td>
+                      {% if data.gambar %}
+                        <img src="{% static 'foto_nanas/'|add:data.gambar %}" alt="Gambar" style="width: 100px; height: auto;">
+                      {% else %}
+                        <span>No Image</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>No</th>
+                    <th>Sample</th>
+                    <th>Red</th>
+                    <th>Green</th>
+                    <th>Blue</th>
+                    <th>Brix</th>
+                    <th>Label</th>
+                    <th>Gambar</th>
+                  </tr>
+                </tfoot>
+              </table>
           </div>
         </div>
       </div>

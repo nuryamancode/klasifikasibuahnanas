@@ -10,6 +10,8 @@ from django.core.exceptions import ValidationError
 import pandas as pd
 import joblib
 import numpy as np
+from django.db.models import F, Func, Value, FloatField
+import math
 
 # Create your views here.
 def user_not_authenticated(user):
@@ -93,7 +95,7 @@ def import_data_nanas(request):
 
             for row in df.itertuples():
                 DataNanas.objects.create(
-                    sample=row.sample, red=row.red, green=row.green, blue=row.blue, brix=row.brix, label=row.label
+                    sample=row.sample, red=row.red, green=row.green, blue=row.blue, brix=row.brix, label=row.label, gambar=row.gambar
                 )
 
             messages.success(request, "Data berhasil diimpor!")

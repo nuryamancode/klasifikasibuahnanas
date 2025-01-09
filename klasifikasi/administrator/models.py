@@ -15,6 +15,7 @@ class DataNanas(models.Model):
     blue = models.IntegerField()
     brix = models.FloatField()
     label = models.CharField(max_length=1)
+    gambar = models.CharField(max_length=200)
 
     def __str__(self):
         return f"Sample {self.sample} - {self.label}"
