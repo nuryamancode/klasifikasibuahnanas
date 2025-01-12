@@ -63,21 +63,9 @@ Hasil Klasifikasi
                   placeholder="Masukkan nilai Blue"
                 />
               </div>
-              <div class="mb-3">
-                <label for="brix" class="form-label">Brix</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="brix"
-                  name="brix"
-                  step="0.01"
-                  required
-                  placeholder="Masukkan nilai Brix"
-                />
-              </div>
               <button type="submit" class="btn btn-primary">Klasifikasi</button>
             </form>
-      
+            
             {% if hasil %}
             <div class="mt-4" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 20px;">
               <!-- Bagian Gambar -->
@@ -95,7 +83,6 @@ Hasil Klasifikasi
                 <p><strong>Red:</strong> {{ input.red }}</p>
                 <p><strong>Green:</strong> {{ input.green }}</p>
                 <p><strong>Blue:</strong> {{ input.blue }}</p>
-                <p><strong>Brix:</strong> {{ input.brix }}</p>
                 <p>
                   <strong>Klasifikasi:</strong>
                   <span class="text-success">{{ hasil }}</span>
@@ -109,7 +96,6 @@ Hasil Klasifikasi
                   <input type="hidden" name="red" value="{{ input.red }}">
                   <input type="hidden" name="green" value="{{ input.green }}">
                   <input type="hidden" name="blue" value="{{ input.blue }}">
-                  <input type="hidden" name="brix" value="{{ input.brix }}">
                   <input type="hidden" name="label" value="{{ hasil }}">
                   <input type="hidden" name="gambar" value="{{ gambar }}">
                   <button type="submit" name="simpan_hasil" class="btn btn-success">Simpan Hasil Klasifikasi</button>
@@ -117,8 +103,6 @@ Hasil Klasifikasi
               </div>
             </div>
             {% endif %}
-            
-            
           </div>
         </div>
       </div>

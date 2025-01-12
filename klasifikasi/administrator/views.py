@@ -141,8 +141,8 @@ def riwayatklasifikasi(request):
     })
 
 # Load model dan scaler
-mlp_model = joblib.load("mlp_model.pkl")
-scaler = joblib.load("scaler.pkl")
+mlp_model = joblib.load("mlp_model3.pkl")
+scaler = joblib.load("scaler3.pkl")
 
 @login_required
 def hasilklasifikasi(request):
@@ -156,10 +156,9 @@ def hasilklasifikasi(request):
             red = float(request.POST.get('red'))
             green = float(request.POST.get('green'))
             blue = float(request.POST.get('blue'))
-            brix = float(request.POST.get('brix'))
 
             # Preprocessing data
-            input_data = np.array([[red, green, blue, brix]])
+            input_data = np.array([[red, green, blue]])  # Hanya menggunakan red, green, blue
             input_data_scaled = scaler.transform(input_data)  # Normalisasi data
 
             # Prediksi
@@ -171,10 +170,9 @@ def hasilklasifikasi(request):
             closest_match = DataNanas.objects.annotate(
                 diff_red=F('red') - red,
                 diff_green=F('green') - green,
-                diff_blue=F('blue') - blue,
-                diff_brix=F('brix') - brix
+                diff_blue=F('blue') - blue
             ).order_by(
-                (F('diff_red')**2 + F('diff_green')**2 + F('diff_blue')**2 + F('diff_brix')**2).asc()
+                (F('diff_red')**2 + F('diff_green')**2 + F('diff_blue')**2).asc()  # Mengabaikan brix
             ).first()
 
             # Kembalikan hasil prediksi ke halaman
@@ -184,12 +182,12 @@ def hasilklasifikasi(request):
                     'red': red,
                     'green': green,
                     'blue': blue,
-                    'brix': brix,
                 },
                 'gambar': closest_match.gambar if closest_match else None
             })
         except Exception as e:
             return render(request, 'page/hasil-klasifikasi.html', {'error': str(e)})
+
         
 @login_required(login_url='login')
 def simpan_klasifikasi(request):
