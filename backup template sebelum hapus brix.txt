@@ -25,18 +25,8 @@ Hasil Klasifikasi
               {% endfor %}
             </div>
             {% endif %}
-            <form method="POST" enctype="multipart/form-data" class="mt-4">
+            <form method="POST" class="mt-4">
               {% csrf_token %}
-              <div class="mb-3">
-                <label for="image" class="form-label">Unggah Gambar</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                />
-              </div>
               <div class="mb-3">
                 <label for="red" class="form-label">Red</label>
                 <input
@@ -45,7 +35,8 @@ Hasil Klasifikasi
                   id="red"
                   name="red"
                   step="0.01"
-                  placeholder="Masukkan nilai Red (Opsional)"
+                  required
+                  placeholder="Masukkan nilai Red"
                 />
               </div>
               <div class="mb-3">
@@ -56,7 +47,8 @@ Hasil Klasifikasi
                   id="green"
                   name="green"
                   step="0.01"
-                  placeholder="Masukkan nilai Green (Opsional)"
+                  required
+                  placeholder="Masukkan nilai Green"
                 />
               </div>
               <div class="mb-3">
@@ -67,12 +59,25 @@ Hasil Klasifikasi
                   id="blue"
                   name="blue"
                   step="0.01"
-                  placeholder="Masukkan nilai Blue (Opsional)"
+                  required
+                  placeholder="Masukkan nilai Blue"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="brix" class="form-label">Brix</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="brix"
+                  name="brix"
+                  step="0.01"
+                  required
+                  placeholder="Masukkan nilai Brix"
                 />
               </div>
               <button type="submit" class="btn btn-primary">Klasifikasi</button>
             </form>
-                        
+      
             {% if hasil %}
             <div class="mt-4" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 20px;">
               <!-- Bagian Gambar -->
@@ -90,6 +95,7 @@ Hasil Klasifikasi
                 <p><strong>Red:</strong> {{ input.red }}</p>
                 <p><strong>Green:</strong> {{ input.green }}</p>
                 <p><strong>Blue:</strong> {{ input.blue }}</p>
+                <p><strong>Brix:</strong> {{ input.brix }}</p>
                 <p>
                   <strong>Klasifikasi:</strong>
                   <span class="text-success">{{ hasil }}</span>
@@ -103,6 +109,7 @@ Hasil Klasifikasi
                   <input type="hidden" name="red" value="{{ input.red }}">
                   <input type="hidden" name="green" value="{{ input.green }}">
                   <input type="hidden" name="blue" value="{{ input.blue }}">
+                  <input type="hidden" name="brix" value="{{ input.brix }}">
                   <input type="hidden" name="label" value="{{ hasil }}">
                   <input type="hidden" name="gambar" value="{{ gambar }}">
                   <button type="submit" name="simpan_hasil" class="btn btn-success">Simpan Hasil Klasifikasi</button>
@@ -110,6 +117,8 @@ Hasil Klasifikasi
               </div>
             </div>
             {% endif %}
+            
+            
           </div>
         </div>
       </div>

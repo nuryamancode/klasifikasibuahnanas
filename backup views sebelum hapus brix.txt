@@ -12,8 +12,6 @@ import joblib
 import numpy as np
 from django.db.models import F, Func, Value, FloatField
 import math
-import cv2
-from PIL import Image
 
 # Create your views here.
 def user_not_authenticated(user):
@@ -143,56 +141,40 @@ def riwayatklasifikasi(request):
     })
 
 # Load model dan scaler
-mlp_model = joblib.load("mlp_model3.pkl")
-scaler = joblib.load("scaler3.pkl")
+mlp_model = joblib.load("mlp_model.pkl")
+scaler = joblib.load("scaler.pkl")
 
 @login_required
 def hasilklasifikasi(request):
     if request.method == 'GET':
         # Tampilkan halaman form
         return render(request, 'page/hasil-klasifikasi.html')
-
+    
     if request.method == 'POST':
         try:
-            # Ambil nilai RGB dari form atau gambar
-            uploaded_file = request.FILES.get('image')
-            if uploaded_file:
-                img = Image.open(uploaded_file)
-                img = np.array(img)
-
-                if img is None:
-                    raise ValueError("Gambar gagal dibaca!")
-
-                # Resize gambar dan konversi ke RGB
-                resized_img = cv2.resize(img, (100, 100))
-                resized_img_rgb = cv2.cvtColor(resized_img, cv2.COLOR_BGR2RGB)
-
-                # Ambil pixel tengah gambar
-                height, width, _ = resized_img_rgb.shape
-                center_pixel = resized_img_rgb[height // 2, width // 2]
-                red, green, blue = center_pixel
-            else:
-                # Ambil nilai manual dari form
-                red = float(request.POST.get('red', 0))
-                green = float(request.POST.get('green', 0))
-                blue = float(request.POST.get('blue', 0))
+            # Ambil data dari form
+            red = float(request.POST.get('red'))
+            green = float(request.POST.get('green'))
+            blue = float(request.POST.get('blue'))
+            brix = float(request.POST.get('brix'))
 
             # Preprocessing data
-            input_data = np.array([[red, green, blue]])
+            input_data = np.array([[red, green, blue, brix]])
             input_data_scaled = scaler.transform(input_data)  # Normalisasi data
 
             # Prediksi
             prediction = mlp_model.predict(input_data_scaled)
-            label_map = {0: 'C', 1: 'B', 2: 'A'}
+            label_map = {0: 'C', 1: 'B', 2: 'A'}  # Mapping label numerik ke kategori
             hasil_klasifikasi = label_map[prediction[0]]
 
             # Cari data nanas yang nilainya paling dekat
             closest_match = DataNanas.objects.annotate(
                 diff_red=F('red') - red,
                 diff_green=F('green') - green,
-                diff_blue=F('blue') - blue
+                diff_blue=F('blue') - blue,
+                diff_brix=F('brix') - brix
             ).order_by(
-                (F('diff_red')**2 + F('diff_green')**2 + F('diff_blue')**2).asc()
+                (F('diff_red')**2 + F('diff_green')**2 + F('diff_blue')**2 + F('diff_brix')**2).asc()
             ).first()
 
             # Kembalikan hasil prediksi ke halaman
@@ -202,6 +184,7 @@ def hasilklasifikasi(request):
                     'red': red,
                     'green': green,
                     'blue': blue,
+                    'brix': brix,
                 },
                 'gambar': closest_match.gambar if closest_match else None
             })
