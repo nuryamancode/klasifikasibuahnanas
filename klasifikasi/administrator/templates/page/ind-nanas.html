@@ -26,11 +26,20 @@ Input Data Latih Nanas
             </div>
             {% endif %}
 
-            <!-- Tombol Tambah Data dan Import Data -->
-            <div class="mb-3">
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahDataModal">Tambah Data</button>
-              <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importDataModal">Import Data</button>
-              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTable">Kosongkan Tabel</button>
+            <!-- Tombol Tambah Data, Import Data, Kosongkan Tabel, dan Refresh Data Latih -->
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+              <div>
+                <!-- Tombol di sebelah kiri -->
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahDataModal">Tambah Data</button>
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importDataModal">Import Data</button>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTable">Kosongkan Tabel</button>
+              </div>
+              
+              <!-- Tombol di sebelah kanan -->
+              <form action="{% url 'refresh_datalatih' %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning ms-auto">Refresh Data Latih</button>
+              </form>
             </div>
 
             <!-- Tabel Data Nanas -->
@@ -43,7 +52,6 @@ Input Data Latih Nanas
                     <th>Red</th>
                     <th>Green</th>
                     <th>Blue</th>
-                    <th>Brix</th>
                     <th>Label</th>
                     <th>Gambar</th>
                   </tr>
@@ -56,11 +64,10 @@ Input Data Latih Nanas
                     <td>{{ data.red }}</td>
                     <td>{{ data.green }}</td>
                     <td>{{ data.blue }}</td>
-                    <td>{{ data.brix }}</td>
                     <td>{{ data.label }}</td>
                     <td>
                       {% if data.gambar %}
-                        <img src="{% static 'foto_nanas/'|add:data.gambar %}" alt="Gambar" style="width: 100px; height: auto;">
+                        <img src="{% static 'data_nanas2/'|add:data.gambar %}" alt="Gambar" style="width: 100px; height: auto;">
                       {% else %}
                         <span>No Image</span>
                       {% endif %}
@@ -75,7 +82,6 @@ Input Data Latih Nanas
                     <th>Red</th>
                     <th>Green</th>
                     <th>Blue</th>
-                    <th>Brix</th>
                     <th>Label</th>
                     <th>Gambar</th>
                   </tr>
@@ -114,10 +120,6 @@ Input Data Latih Nanas
           <div class="mb-3">
             <label for="blue" class="form-label">Blue</label>
             <input type="number" name="blue" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="brix" class="form-label">Brix</label>
-            <input type="number" name="brix" class="form-control" step="0.1" required>
           </div>
           <div class="mb-3">
             <label for="label" class="form-label">Label</label>

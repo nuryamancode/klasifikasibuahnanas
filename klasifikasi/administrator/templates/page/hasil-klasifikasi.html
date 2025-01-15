@@ -14,7 +14,6 @@ Hasil Klasifikasi
           <div class="card-body">
             <!-- Menampilkan Pesan -->
             <h5 class="card-title">Klasifikasi Data Nanas</h5>
-            <p>Masukkan Nilai untuk Melakukan Klasifikasi</p>
             <!-- Menampilkan Pesan -->
             {% if messages %}
             <div class="alert alert-dismissible fade show" role="alert">
@@ -28,7 +27,7 @@ Hasil Klasifikasi
             <form method="POST" enctype="multipart/form-data" class="mt-4">
               {% csrf_token %}
               <div class="mb-3">
-                <label for="image" class="form-label">Unggah Gambar</label>
+                <label for="image" class="form-label">Unggah Gambar Untuk Melakukan Klasifikasi</label>
                 <input
                   type="file"
                   class="form-control"
@@ -37,40 +36,56 @@ Hasil Klasifikasi
                   accept="image/*"
                 />
               </div>
-              <div class="mb-3">
-                <label for="red" class="form-label">Red</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="red"
-                  name="red"
-                  step="0.01"
-                  placeholder="Masukkan nilai Red (Opsional)"
-                />
+
+              <!-- Accordion untuk Input Nilai Manual -->
+              <div class="accordion" id="manualInputAccordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Atau input nilai manual
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#manualInputAccordion">
+                    <div class="accordion-body">
+                      <div class="mb-3">
+                        <label for="red" class="form-label">Red</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="red"
+                          name="red"
+                          step="0.01"
+                          placeholder="Masukkan nilai Red (Opsional)"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="green" class="form-label">Green</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="green"
+                          name="green"
+                          step="0.01"
+                          placeholder="Masukkan nilai Green (Opsional)"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="blue" class="form-label">Blue</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="blue"
+                          name="blue"
+                          step="0.01"
+                          placeholder="Masukkan nilai Blue (Opsional)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="green" class="form-label">Green</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="green"
-                  name="green"
-                  step="0.01"
-                  placeholder="Masukkan nilai Green (Opsional)"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="blue" class="form-label">Blue</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="blue"
-                  name="blue"
-                  step="0.01"
-                  placeholder="Masukkan nilai Blue (Opsional)"
-                />
-              </div>
-              <button type="submit" class="btn btn-primary">Klasifikasi</button>
+
+              <button type="submit" class="btn btn-primary mt-3">Klasifikasi</button>
             </form>
                         
             {% if hasil %}
@@ -78,7 +93,7 @@ Hasil Klasifikasi
               <!-- Bagian Gambar -->
               <div>
                 {% if gambar %}
-                  <img src="{% static 'foto_nanas/'|add:gambar %}" alt="Gambar Nanas" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
+                  <img src="{% static 'data_nanas2/'|add:gambar %}" alt="Gambar Nanas" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
                 {% else %}
                   <p class="text-warning">Gambar tidak tersedia.</p>
                 {% endif %}

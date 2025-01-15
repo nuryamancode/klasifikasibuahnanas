@@ -14,11 +14,15 @@ from django.db.models import F, Func, Value, FloatField
 import math
 import cv2
 from PIL import Image
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score
+import joblib
 
 # Create your views here.
 def user_not_authenticated(user):
     return not user.is_authenticated
-
 
 @user_passes_test(user_not_authenticated, login_url='inputdatananas')
 def v_login(request):
@@ -64,7 +68,6 @@ def inputdatananas(request):
             red = int(request.POST.get('red'))
             green = int(request.POST.get('green'))
             blue = int(request.POST.get('blue'))
-            brix = float(request.POST.get('brix'))
             label = request.POST.get('label')
 
             # Menyimpan data ke dalam database
@@ -73,7 +76,6 @@ def inputdatananas(request):
                 red=red,
                 green=green,
                 blue=blue,
-                brix=brix,
                 label=label
             )
             data_nanas.save()
@@ -97,7 +99,7 @@ def import_data_nanas(request):
 
             for row in df.itertuples():
                 DataNanas.objects.create(
-                    sample=row.sample, red=row.red, green=row.green, blue=row.blue, brix=row.brix, label=row.label, gambar=row.gambar
+                    sample=row.sample, red=row.red, green=row.green, blue=row.blue, label=row.label, gambar=row.gambar
                 )
 
             messages.success(request, "Data berhasil diimpor!")
@@ -119,6 +121,56 @@ def kosongkan_data_nanas(request):
             messages.error(request, f"Terjadi kesalahan: {str(e)}")
         return redirect("inputdatananas")
     return redirect('inputdatananas')
+
+@login_required
+def refresh_datalatih(request):
+    if request.method == "POST":
+        try:
+            # Ambil data dari database
+            data_nanas = DataNanas.objects.all()
+            if not data_nanas:
+                messages.error(request, "Tidak ada data latih yang tersedia.")
+                return redirect('inputdatananas')
+
+            # Konversi data ke pandas DataFrame
+            data = pd.DataFrame.from_records(data_nanas.values('red', 'green', 'blue', 'label'))
+
+            # Pisahkan fitur dan target
+            X = data[['red', 'green', 'blue']]
+            y = data['label']
+
+            # Encode label (jika target berupa string)
+            label_encoder = LabelEncoder()
+            y = label_encoder.fit_transform(y)
+
+            # Normalisasi fitur
+            scaler = StandardScaler()
+            X = scaler.fit_transform(X)
+
+            # Bagi data menjadi training dan testing
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+            # Bangun model MLP
+            mlp_model = MLPClassifier(hidden_layer_sizes=(10, 10), activation='relu', max_iter=1000, random_state=42)
+            mlp_model.fit(X_train, y_train)
+
+            # Evaluasi model
+            y_pred = mlp_model.predict(X_test)
+            accuracy = accuracy_score(y_test, y_pred)
+            report = classification_report(y_test, y_pred)
+
+            # Simpan model dan scaler
+            joblib.dump(mlp_model, "mlp_model.pkl")
+            joblib.dump(scaler, "scaler.pkl")
+
+            # Berikan feedback ke pengguna
+            messages.success(request, f"Model berhasil diperbarui! Akurasi: {accuracy:.2f}")
+            messages.info(request, f"Classification Report:\n{report}")
+
+        except Exception as e:
+            messages.error(request, f"Terjadi kesalahan saat memperbarui model: {str(e)}")
+
+        return redirect('inputdatananas')
 
 @login_required
 def inputdatagejala(request):
@@ -216,7 +268,6 @@ def simpan_klasifikasi(request):
             red = int(float(request.POST.get('red')))  # Konversi dari string float ke integer
             green = int(float(request.POST.get('green')))  # Konversi dari string float ke integer
             blue = int(float(request.POST.get('blue')))  # Konversi dari string float ke integer
-            brix = float(request.POST.get('brix'))  # Tetap float
             label = request.POST.get('label')
             gambar = request.POST.get('gambar')
 
@@ -225,7 +276,6 @@ def simpan_klasifikasi(request):
                 red=red,
                 green=green,
                 blue=blue,
-                brix=brix,
                 label=label,
                 gambar=gambar
             )

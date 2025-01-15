@@ -13,7 +13,6 @@ class DataNanas(models.Model):
     red = models.IntegerField()
     green = models.IntegerField()
     blue = models.IntegerField()
-    brix = models.FloatField()
     label = models.CharField(max_length=1)
     gambar = models.CharField(max_length=200)
 
@@ -24,7 +23,6 @@ class RiwayatKlasifikasi(models.Model):
     red = models.IntegerField()
     green = models.IntegerField()
     blue = models.IntegerField()
-    brix = models.FloatField()
     label = models.CharField(max_length=10)
     gambar = models.CharField(max_length=200, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
