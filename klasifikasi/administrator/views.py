@@ -165,7 +165,6 @@ def refresh_datalatih(request):
 
             # Berikan feedback ke pengguna
             messages.success(request, f"Model berhasil diperbarui! Akurasi: {accuracy:.2f}")
-            messages.info(request, f"Classification Report:\n{report}")
 
         except Exception as e:
             messages.error(request, f"Terjadi kesalahan saat memperbarui model: {str(e)}")
