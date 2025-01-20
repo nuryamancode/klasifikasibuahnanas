@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from administrator import views
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.v_login, name='login'),
@@ -34,3 +36,7 @@ urlpatterns = [
     path('refresh-datalatih/', views.refresh_datalatih, name='refresh_datalatih'),
 
 ]
+
+# Tambahkan URL untuk media files
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

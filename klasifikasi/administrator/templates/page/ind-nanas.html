@@ -67,11 +67,11 @@ Input Data Latih Nanas
                     <td>{{ data.label }}</td>
                     <td>
                       {% if data.gambar %}
-                        <img src="{% static 'data_nanas2/'|add:data.gambar %}" alt="Gambar" style="width: 100px; height: auto;">
+                        <img src="{{ data.gambar.url }}" alt="Gambar" style="width: 100px; height: auto;">
                       {% else %}
                         <span>No Image</span>
                       {% endif %}
-                    </td>
+                    </td>                    
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -103,31 +103,23 @@ Input Data Latih Nanas
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mb-3">
             <label for="sample" class="form-label">Sample</label>
             <input type="number" name="sample" class="form-control" required>
           </div>
           <div class="mb-3">
-            <label for="red" class="form-label">Red</label>
-            <input type="number" name="red" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="green" class="form-label">Green</label>
-            <input type="number" name="green" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="blue" class="form-label">Blue</label>
-            <input type="number" name="blue" class="form-control" required>
-          </div>
-          <div class="mb-3">
             <label for="label" class="form-label">Label</label>
             <input type="text" name="label" class="form-control" required>
           </div>
+          <div class="mb-3">
+            <label for="gambar" class="form-label">Unggah Gambar</label>
+            <input type="file" name="gambar" class="form-control" accept="image/*" required>
+          </div>
           <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
-      </div>
+      </div>      
     </div>
   </div>
 </div>

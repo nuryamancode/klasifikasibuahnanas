@@ -14,8 +14,7 @@ class DataNanas(models.Model):
     green = models.IntegerField()
     blue = models.IntegerField()
     label = models.CharField(max_length=1)
-    gambar = models.CharField(max_length=200)
-
+    gambar = models.ImageField(upload_to='data_nanas2/', null=True, blank=True)
     def __str__(self):
         return f"Sample {self.sample} - {self.label}"
     

@@ -62,27 +62,40 @@ def logout(request):
 @login_required
 def inputdatananas(request):
     if request.method == 'POST':
-        # Menangani data yang dikirimkan melalui form
         try:
             sample = int(request.POST.get('sample'))
-            red = int(request.POST.get('red'))
-            green = int(request.POST.get('green'))
-            blue = int(request.POST.get('blue'))
             label = request.POST.get('label')
+            gambar = request.FILES.get('gambar')
 
-            # Menyimpan data ke dalam database
+            # Baca gambar dan ekstrak warna tengah
+            if gambar:
+                img = Image.open(gambar)
+                img = img.resize((100, 100))  # Resize untuk konsistensi
+                img_np = np.array(img)
+
+                if img_np.ndim == 3:  # Pastikan gambar memiliki saluran warna RGB
+                    height, width, _ = img_np.shape
+                    center_pixel = img_np[height // 2, width // 2]
+                    red, green, blue = center_pixel
+                else:
+                    raise ValueError("Gambar harus memiliki 3 saluran warna (RGB).")
+            else:
+                raise ValueError("Gambar tidak ditemukan.")
+
+            # Simpan data ke database
             data_nanas = DataNanas(
                 sample=sample,
                 red=red,
                 green=green,
                 blue=blue,
-                label=label
+                label=label,
+                gambar=gambar  # Simpan file gambar
             )
             data_nanas.save()
             messages.success(request, 'Data nanas berhasil ditambahkan!')
         except Exception as e:
             messages.error(request, f'Error: {e}')
-        
+
         return redirect('inputdatananas')
 
     # Menampilkan data nanas
